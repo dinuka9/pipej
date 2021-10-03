@@ -6,8 +6,8 @@ import tech.dinuka9.pipej.Plugin;
 public class AdditionPlugin extends Plugin<TestContext> {
 
     @Override
-    public void onExecute(TestContext testContext, Callable<TestContext> callback) {
+    public void execute(TestContext testContext, Callable<TestContext> callback) {
         testContext.c = testContext.a + testContext.b;
-        callback.complete(testContext);
+        callback.onComplete(testContext);
     }
 }

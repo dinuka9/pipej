@@ -6,9 +6,9 @@ import tech.dinuka9.pipej.Plugin;
 public class InitPlugin extends Plugin<TestContext> {
 
     @Override
-    public void onExecute(TestContext testContext, Callable<TestContext> callback) {
+    public void execute(TestContext testContext, Callable<TestContext> callback) {
         testContext.a = 5;
         testContext.b = 3;
-        callback.complete(testContext);
+        callback.onComplete(testContext);
     }
 }

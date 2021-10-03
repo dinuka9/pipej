@@ -1,5 +1,6 @@
 package tech.dinuka9.pipej;
 
+import tech.dinuka9.pipej.exception.PipelineException;
 import tech.dinuka9.pipej.model.Context;
 
 import java.util.*;
@@ -10,16 +11,21 @@ public class Pipeline<T extends Context> implements Callable<T> {
 
     private Iterator<Map.Entry<Integer, Plugin<T>>> pluginIterator;
 
-    public void run(T context){
+    public void run(T context) {
         pluginIterator = plugins.entrySet().iterator();
         Optional<Plugin<T>> next = next();
-        next.ifPresent(plugin -> plugin.onExecute(context, this));
+        next.ifPresent(plugin -> plugin.execute(context, this));
     }
 
     @Override
-    public void complete(T t) {
+    public void onComplete(T t) {
         Optional<Plugin<T>> next = next();
-        next.ifPresent(plugin -> plugin.onExecute(t, this));
+        next.ifPresent(plugin -> plugin.execute(t, this));
+    }
+
+    @Override
+    public void onError(String m) {
+        throw new PipelineException(m);
     }
 
     public void setPlugins(Map<Integer, Plugin<T>> plugins) {
